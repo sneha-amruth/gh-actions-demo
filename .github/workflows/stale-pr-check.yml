@@ -1,0 +1,23 @@
+name: Label Stale Pull Requests
+
+on:
+  schedule:
+    - cron: "0 1 * * *" # Runs at 01:00 UTC every day
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v8
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          only-labels: ""
+          days-before-stale: 5
+          days-before-close: -1 # We don't want to close PRs, just label them
+          stale-pr-label: "STALE"
+          stale-pr-message: "This pull request has been inactive for 5 days and has been labeled as stale."
+          operations-per-run: 100
+          ascending: true
+          skip-stale-pr-message: false
+          remove-stale-when-updated: true
